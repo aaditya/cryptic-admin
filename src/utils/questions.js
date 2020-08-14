@@ -19,8 +19,8 @@ export const refreshQuestion = async () => {
 
         return getQuestions(data.data);
     } catch (err) {
-        openNotification(err.response.data.message);
-        return null;
+        openNotification(err.response ? err.response.data.message : "Server Error.");
+        return getQuestions(null);
     }
 }
 
@@ -57,7 +57,7 @@ export const refreshBoard = async () => {
         let { data } = await axios(options);
         return getBoard(data.data);
     } catch (err) {
-        openNotification(err.response.data.message);
-        return null;
+        openNotification(err.response ? err.response.data.message : "Server Error.");
+        return getBoard(null);
     }
 }

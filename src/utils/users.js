@@ -18,8 +18,8 @@ export const refreshUsers = async () => {
 
         return getUsers(data.data);
     } catch (err) {
-        openNotification(err.response.data.message);
-        return null;
+        openNotification(err.response ? err.response.data.message : "Server Error.");
+        return getUsers(null);
     }
 }
 
@@ -39,7 +39,7 @@ export const disableUser = async (id, status) => {
 
         return true;
     } catch (err) {
-        openNotification(err.response.data.message);
+        openNotification(err.response ? err.response.data.message : "Server Error.");
         return null;
     }
 }
@@ -60,7 +60,7 @@ export const grantAdmin = async (id, status) => {
 
         return true;
     } catch (err) {
-        openNotification(err.response.data.message);
+        openNotification(err.response ? err.response.data.message : "Server Error.");
         return null;
     }
 }
