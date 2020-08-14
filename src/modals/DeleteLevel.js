@@ -2,7 +2,7 @@ import React from "react";
 import { Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
-import { deleteLevel } from "../utils/questions"; 
+import { deleteLevel } from "../utils/questions";
 
 const { confirm } = Modal;
 

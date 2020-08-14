@@ -65,6 +65,7 @@ export default function Leaderboard() {
     let source = useSelector(state => state.board);
     const dispatch = useDispatch();
     let [board, setBoard] = useState([]);
+    let [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (source) {
@@ -72,14 +73,17 @@ export default function Leaderboard() {
         }
     }, [source]);
 
-    const changeBoard = () => {
-        refreshBoard().then(dispatch);
+    const changeBoard = async () => {
+        setLoading(true);
+        let refresh = await refreshBoard();
+        dispatch(refresh);
+        setLoading(false);
     }
 
     return (
         <div>
             <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 15 }}>
-                <Button type="dashed" style={{ marginRight: 8 }} icon={<RedoOutlined />} onClick={changeBoard}>Refresh</Button>
+                <Button type="dashed" style={{ marginRight: 8 }} icon={<RedoOutlined />} loading={loading} onClick={changeBoard}>Refresh</Button>
                 <Button type="primary" icon={<DownloadOutlined />} >Download Results</Button>
             </div>
             <Table columns={columns} dataSource={board} />
