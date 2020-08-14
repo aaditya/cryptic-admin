@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Layout } from "antd";
 import { Switch, Route } from "react-router-dom";
 
@@ -7,10 +8,22 @@ import NotFound from "./NotFound";
 import Sidebar from "./Sidebar";
 import Question from "./Questions";
 import Leaderboard from "./Leaderboard";
+import Users from "./Users";
+
+import { refreshQuestion, refreshBoard } from "../utils/questions";
+import { refreshUsers } from "../utils/users";
 
 const { Header, Content } = Layout;
 
 export default function Dashboard() {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        refreshQuestion().then(dispatch);
+        refreshUsers().then(dispatch);
+        refreshBoard().then(dispatch);
+    }, [dispatch])
+    
     return (
         <Layout style={{ minHeight: "100vh" }}>
             <Header className="header-styling">
@@ -23,6 +36,7 @@ export default function Dashboard() {
                         <Switch>
                             <Route exact path="/" component={Question} />
                             <Route exact path="/board" component={Leaderboard} />
+                            <Route exact path="/users" component={Users} />
                             <Route component={NotFound} />
                         </Switch>
                     </Content>

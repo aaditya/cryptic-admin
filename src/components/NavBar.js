@@ -2,7 +2,6 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Dropdown, Avatar, Menu } from "antd";
 import { withRouter } from "react-router-dom";
-import { HomeOutlined } from '@ant-design/icons';
 
 import { setAuthUser } from "../actions/authUser";
 
@@ -32,7 +31,6 @@ function NavBar(props) {
                     mode="horizontal"
                     defaultSelectedKeys={['home']}
                 >
-                    <Item disabled={true} icon={<HomeOutlined />} key="home">Home</Item>
                 </Menu>
             </div>
             <Dropdown overlay={menu}>

@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Table, Space, Button, Tooltip } from 'antd';
-
-import { 
-    AppstoreAddOutlined, 
-    EyeOutlined, 
-    DeleteOutlined, 
-    PlusOutlined, 
-    EditOutlined,
-    RedoOutlined 
-} from '@ant-design/icons';
-
-import { refreshQuestion } from "../utils/getQuestion";
+import { AppstoreAddOutlined, EyeOutlined, DeleteOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';
 
 import { deleteLevelModal } from "./Modals";
 
@@ -52,16 +43,18 @@ const columns = [
 ];
 
 export default function Question() {
+    let source = useSelector(state => state.questions);
     let [questions, setQuestions] = useState([]);
 
     useEffect(() => {
-        refreshQuestion().then(q => setQuestions(q.map((d, i) => ({ ...d, key: i }))));
-    }, [])
+        if (source) {
+            setQuestions(Object.values(source).map((d, i) => ({ ...d, key: i })));
+        }
+    }, [source]);
 
     return (
         <div>
             <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 15 }}>
-                <Button type="primary" style={{ marginRight: 8 }} icon={<RedoOutlined />} onClick={refreshQuestion}>Refresh</Button>
                 <Button type="primary" icon={<PlusOutlined />}>Add Level</Button>
             </div>
             <Table columns={columns} dataSource={questions} />

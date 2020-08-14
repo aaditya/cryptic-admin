@@ -1,6 +1,10 @@
 import axios from "axios";
 
+import { openNotification } from "../components/Notification";
+
 import { config } from "./settings";
+import { getQuestions } from "../actions/questions";
+import { getBoard } from "../actions/board";
 
 export const refreshQuestion = async () => {
     try {
@@ -13,13 +17,10 @@ export const refreshQuestion = async () => {
         }
         let { data } = await axios(options);
 
-        if (data.end) {
-            return { end: true }
-        }
-
-        return data.data;
+        return getQuestions(data.data);
     } catch (err) {
-        return {};
+        openNotification(err.response.data.message);
+        return null;
     }
 }
 
@@ -35,7 +36,7 @@ export const deleteLevel = async (levelId) => {
                 qid: levelId
             }
         }
-        
+
         await axios(options);
 
         return true;
@@ -44,7 +45,7 @@ export const deleteLevel = async (levelId) => {
     }
 }
 
-export const getBoard = async () => {
+export const refreshBoard = async () => {
     try {
         let options = {
             method: "get",
@@ -54,8 +55,9 @@ export const getBoard = async () => {
             }
         }
         let { data } = await axios(options);
-        return data.data;
+        return getBoard(data.data);
     } catch (err) {
-        return [];
+        openNotification(err.response.data.message);
+        return null;
     }
 }

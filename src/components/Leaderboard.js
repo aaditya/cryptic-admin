@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Table, Button } from 'antd';
-import { DownloadOutlined } from '@ant-design/icons';
+import { DownloadOutlined, RedoOutlined } from '@ant-design/icons';
 
-import { getBoard } from "../utils/getQuestion";
+import { refreshBoard } from "../utils/questions";
 
 const columns = [
     {
@@ -61,17 +62,24 @@ const columns = [
 ];
 
 export default function Leaderboard() {
+    let source = useSelector(state => state.board);
+    const dispatch = useDispatch();
     let [board, setBoard] = useState([]);
 
     useEffect(() => {
-        getBoard().then(lb => {
-            setBoard(lb.map((b, i) => ({ ...b, key: i })));
-        });
-    }, []);
+        if (source) {
+            setBoard(Object.values(source).map((b, i) => ({ ...b, key: i })));
+        }
+    }, [source]);
+
+    const changeBoard = () => {
+        refreshBoard().then(dispatch);
+    }
 
     return (
         <div>
             <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 15 }}>
+                <Button type="dashed" style={{ marginRight: 8 }} icon={<RedoOutlined />} onClick={changeBoard}>Refresh</Button>
                 <Button type="primary" icon={<DownloadOutlined />} >Download Results</Button>
             </div>
             <Table columns={columns} dataSource={board} />
