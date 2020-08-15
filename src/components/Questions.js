@@ -1,19 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Table, Space, Button, Tooltip } from 'antd';
-import { AppstoreAddOutlined, EyeOutlined, DeleteOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';
+import { EyeOutlined, DeleteOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';
 
-import { deleteLevelModal } from "../modals/DeleteLevel";
+import DeleteLevel from "../modals/DeleteLevel";
+import GeneralModal from "../modals/General";
 
 export default function Question() {
+    const dispatch = useDispatch();
     let source = useSelector(state => state.questions);
     let [questions, setQuestions] = useState([]);
+    let [modalView, setModalView] = useState(false);
+    let [modalContext, setModalContext] = useState("");
+    let [modalRecord, setModalRecord] = useState({});
 
     useEffect(() => {
         if (source) {
             setQuestions(Object.values(source).map((d, i) => ({ ...d, key: i })));
         }
     }, [source]);
+
+    const showModal = (context, record) => () => {
+        setModalView(true);
+        setModalContext(context);
+        setModalRecord(record)
+    }
 
     const columns = [
         {
@@ -43,10 +54,10 @@ export default function Question() {
             key: 'action',
             render: (text, record) => (
                 <Space size="middle">
-                    <Tooltip placement="topLeft" title="Add Question" arrowPointAtCenter><Button type="primary" icon={<AppstoreAddOutlined />}></Button></Tooltip>
-                    <Tooltip placement="topLeft" title="Edit Level" arrowPointAtCenter><Button type="primary" icon={<EditOutlined />}></Button></Tooltip>
-                    <Tooltip placement="topLeft" title="View Questions" arrowPointAtCenter><Button type="primary" icon={<EyeOutlined />}></Button></Tooltip>
-                    <Tooltip placement="topLeft" title="Delete Level" arrowPointAtCenter><Button type="danger" icon={<DeleteOutlined />} onClick={deleteLevelModal(record)}></Button></Tooltip>
+                    {/* <Tooltip placement="topLeft" title="Add Question" arrowPointAtCenter><Button type="primary" icon={<AppstoreAddOutlined />}></Button></Tooltip> */}
+                    <Tooltip placement="topLeft" title="Edit Level" arrowPointAtCenter><Button type="primary" icon={<EditOutlined />} onClick={showModal('edit-level', record)}></Button></Tooltip>
+                    <Tooltip placement="topLeft" title="View Questions" arrowPointAtCenter><Button type="primary" icon={<EyeOutlined />} onClick={showModal('view-questions')}></Button></Tooltip>
+                    <Tooltip placement="topLeft" title="Delete Level" arrowPointAtCenter><Button type="danger" icon={<DeleteOutlined />} onClick={DeleteLevel(record, dispatch)}></Button></Tooltip>
                 </Space>
             ),
         },
@@ -54,8 +65,9 @@ export default function Question() {
 
     return (
         <div>
+            <GeneralModal visible={modalView} parentVisible={setModalView} context={modalContext} record={modalRecord} />
             <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 15 }}>
-                <Button type="primary" icon={<PlusOutlined />}>Add Level</Button>
+                <Button type="primary" icon={<PlusOutlined />} onClick={showModal('add-level')}>Add Level</Button>
             </div>
             <Table columns={columns} dataSource={questions} />
         </div>

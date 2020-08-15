@@ -2,11 +2,11 @@ import React from "react";
 import { Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
-import { deleteLevel } from "../utils/questions";
+import { deleteLevel, refreshQuestion } from "../utils/questions";
 
 const { confirm } = Modal;
 
-export function deleteLevelModal(level) {
+export default function DeleteLevel(level, dispatch) {
     return function () {
         confirm({
             title: 'Are you sure you want to delete this level ?',
@@ -14,8 +14,17 @@ export function deleteLevelModal(level) {
             content: 'All related Questions will also be deleted.',
             onOk() {
                 return new Promise((resolve, reject) => {
-                    deleteLevel(level._id).then(resolve).catch(reject);
-                }).catch();
+                    (async () => {
+                        try {
+                            await deleteLevel(level._id);
+                            let levels = await refreshQuestion();
+                            dispatch(levels);
+                            resolve(true);
+                        } catch (err) {
+                            reject(err);
+                        }
+                    })();
+                });
             },
             onCancel() { },
         });

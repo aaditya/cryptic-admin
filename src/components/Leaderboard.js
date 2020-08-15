@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Table, Button } from 'antd';
 import { DownloadOutlined, RedoOutlined } from '@ant-design/icons';
 
-import { refreshBoard } from "../utils/questions";
+import { refreshBoard, downloadBoard } from "../utils/questions";
 
 const columns = [
     {
@@ -39,10 +39,16 @@ const columns = [
         key: 'solved',
     },
     {
+        title: 'Completed',
+        dataIndex: 'completed',
+        key: 'completed',
+        render: text => <p>{text ? "Yes" : "No"}</p>
+    },
+    {
         title: 'Completed On',
         dataIndex: 'date',
         key: 'date',
-        render: text => new Date(text).toDateString()
+        render: text => <p>{new Date(text).toDateString()}</p>
     },
     {
         title: 'Time Spent (hh:mm:ss)',
@@ -84,7 +90,7 @@ export default function Leaderboard() {
         <div>
             <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 15 }}>
                 <Button type="dashed" style={{ marginRight: 8 }} icon={<RedoOutlined />} loading={loading} onClick={changeBoard}>Refresh</Button>
-                <Button type="primary" icon={<DownloadOutlined />} >Download Results</Button>
+                <Button type="primary" icon={<DownloadOutlined />} onClick={downloadBoard}>Download</Button>
             </div>
             <Table columns={columns} dataSource={board} />
         </div>
