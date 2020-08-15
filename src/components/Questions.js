@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Table, Space, Button, Tooltip } from 'antd';
 import { EyeOutlined, DeleteOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';
 
-import DeleteLevel from "../modals/DeleteLevel";
+import { DeleteLevel } from "../modals/Delete";
 import GeneralModal from "../modals/General";
 
 export default function Question() {
@@ -54,9 +54,8 @@ export default function Question() {
             key: 'action',
             render: (text, record) => (
                 <Space size="middle">
-                    {/* <Tooltip placement="topLeft" title="Add Question" arrowPointAtCenter><Button type="primary" icon={<AppstoreAddOutlined />}></Button></Tooltip> */}
                     <Tooltip placement="topLeft" title="Edit Level" arrowPointAtCenter><Button type="primary" icon={<EditOutlined />} onClick={showModal('edit-level', record)}></Button></Tooltip>
-                    <Tooltip placement="topLeft" title="View Questions" arrowPointAtCenter><Button type="primary" icon={<EyeOutlined />} onClick={showModal('view-questions')}></Button></Tooltip>
+                    <Tooltip placement="topLeft" title="View Questions" arrowPointAtCenter><Button type="primary" icon={<EyeOutlined />} onClick={showModal('view-questions', record)}></Button></Tooltip>
                     <Tooltip placement="topLeft" title="Delete Level" arrowPointAtCenter><Button type="danger" icon={<DeleteOutlined />} onClick={DeleteLevel(record, dispatch)}></Button></Tooltip>
                 </Space>
             ),

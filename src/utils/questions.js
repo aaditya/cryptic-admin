@@ -126,3 +126,44 @@ export const editLevel = async (levelId, count) => {
         return null;
     }
 }
+
+export const deleteQuestion = async (levelId, qId) => {
+    try {
+        let options = {
+            method: "delete",
+            url: `${config.url.API_URL}/api/v1/questions/set`,
+            headers: {
+                "x-auth-token": localStorage.getItem('access_token')
+            },
+            data: {
+                levelId,
+                qId
+            }
+        }
+
+        await axios(options);
+
+        return true;
+    } catch (err) {
+        return null;
+    }
+}
+
+export const manageQuestion = async (type, data) => {
+    try {
+        let options = {
+            method: type === "edit" ? "put" : "post",
+            url: `${config.url.API_URL}/api/v1/questions/set`,
+            headers: {
+                "x-auth-token": localStorage.getItem('access_token')
+            },
+            data
+        }
+
+        await axios(options);
+
+        return true;
+    } catch (err) {
+        return null;
+    }
+}

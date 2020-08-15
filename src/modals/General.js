@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Modal } from 'antd';
 
 import AddLevel from "./forms/AddLevel";
+import AddQuestion from "./forms/AddQuestion"
+import GetQuestion from "./GetQuestion";
 
 export default function GeneralModal(props) {
     let [visible, setVisible] = useState(false);
@@ -24,7 +26,13 @@ export default function GeneralModal(props) {
                 "title": "Edit Level Info"
             },
             "view-questions": {
-                "title": "Get Level Questions"
+                "title": "View Questions"
+            },
+            "add-question": {
+                "title": "Add Question"
+            },
+            "edit-question": {
+                "title": "Edit Question"
             },
             "default": {
                 "title": "General Modal"
@@ -40,6 +48,8 @@ export default function GeneralModal(props) {
             footer={null}
         >
             {["add-level", "edit-level"].includes(props.context) && <AddLevel {...props} hide={hideModal} />}
+            {props.context === "view-questions" && <GetQuestion {...props} hide={hideModal} />}
+            {["add-question", "edit-question"].includes(props.context) && <AddQuestion {...props} hide={hideModal} />}
         </Modal>
     )
 }
