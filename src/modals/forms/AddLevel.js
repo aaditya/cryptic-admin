@@ -25,7 +25,7 @@ export default function AddLevel(props) {
 
     useEffect(() => {
         form.resetFields();
-    }, [form, props.record]);
+    });
 
     const onFinish = async (values) => {
         let { level, count } = values;

@@ -92,7 +92,7 @@ export default function Leaderboard() {
                 <Button type="dashed" style={{ marginRight: 8 }} icon={<RedoOutlined />} loading={loading} onClick={changeBoard}>Refresh</Button>
                 <Button type="primary" icon={<DownloadOutlined />} onClick={downloadBoard}>Download</Button>
             </div>
-            <Table columns={columns} dataSource={board} />
+            <Table columns={columns} dataSource={board} pagination={{ defaultPageSize: 7, position: ['bottomCenter'] }} />
         </div>
     )
 }

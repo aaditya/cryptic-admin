@@ -93,6 +93,6 @@ export default function Users() {
     ];
 
     return (
-        <Table columns={columns} dataSource={users} />
+        <Table columns={columns} dataSource={users} pagination={{ defaultPageSize: 7, position: ['bottomCenter'] }} />
     )
 }

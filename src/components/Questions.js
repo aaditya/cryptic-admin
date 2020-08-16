@@ -68,7 +68,11 @@ export default function Question() {
             <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 15 }}>
                 <Button type="primary" icon={<PlusOutlined />} onClick={showModal('add-level')}>Add Level</Button>
             </div>
-            <Table columns={columns} dataSource={questions} />
+            <Table 
+                columns={columns} 
+                dataSource={questions} 
+                pagination={{ defaultPageSize: 7, position: ['bottomCenter'] }} 
+            />
         </div>
     )
 }
