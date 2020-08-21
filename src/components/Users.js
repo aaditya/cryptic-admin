@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Table, Button, Space, Tooltip } from 'antd';
-import { EyeOutlined, EyeInvisibleOutlined, UserAddOutlined } from '@ant-design/icons';
+import { EyeOutlined, EyeInvisibleOutlined, UserAddOutlined, CheckOutlined } from '@ant-design/icons';
 
 import { refreshUsers, disableUser, grantAdmin } from "../utils/users";
 
@@ -81,12 +81,15 @@ export default function Users() {
             key: 'action',
             render: (text, record) => (
                 <Space size="middle">
-                    {record.access === "user"
-                        ? <Tooltip placement="topLeft" title="Grant Admin" arrowPointAtCenter><Button type="primary" onClick={manageUser("grant", record._id, "admin")} icon={<UserAddOutlined />}></Button></Tooltip>
-                        : <Tooltip placement="topLeft" title="Remove Admin" arrowPointAtCenter><Button type="danger" onClick={manageUser("grant", record._id, "user")} icon={<UserAddOutlined />}></Button></Tooltip>}
-                    {record.status === -1
-                        ? <Tooltip placement="topLeft" title="Enable User" arrowPointAtCenter><Button type="primary" onClick={manageUser("disable", record._id, 1)} icon={<EyeOutlined />}></Button></Tooltip>
-                        : <Tooltip placement="topLeft" title="Disable User" arrowPointAtCenter><Button type="danger" onClick={manageUser("disable", record._id, -1)} icon={<EyeInvisibleOutlined />}></Button></Tooltip>}
+                    <Tooltip placement="topLeft" title="Activate User" arrowPointAtCenter>
+                        <Button type="primary" className="btn-green" disabled={record.status !== 0} onClick={manageUser("disable", record._id, 1)} icon={<CheckOutlined />}></Button>
+                    </Tooltip>
+                    <Tooltip placement="topLeft" title={record.access === "user" ? "Grant Admin" : "Remove Admin"} arrowPointAtCenter>
+                        <Button type={record.access === "user" ? "primary" : "danger"} disabled={record.status === -1} onClick={manageUser("grant", record._id, `${record.access === "user" ? "admin" : "user"}`)} icon={<UserAddOutlined />}></Button>
+                    </Tooltip>
+                    <Tooltip placement="topLeft" title={record.status === -1 ? "Enable User" : "Disable User"} arrowPointAtCenter>
+                        <Button type={record.status === -1 ? "primary" : "danger"} disabled={record.access === "admin"} onClick={manageUser("disable", record._id, `${record.status * -1}`)} icon={record.status === -1 ? <EyeOutlined /> : <EyeInvisibleOutlined />}></Button>
+                    </Tooltip>
                 </Space>
             ),
         }

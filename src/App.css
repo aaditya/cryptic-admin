@@ -60,3 +60,16 @@
 .ant-layout-content {
   padding: 16px !important;
 }
+
+.btn-green {
+  background: #a0d911;
+  border-color: #a0d911;
+  transition: 0.5s ease;
+  -webkit-transition: 0.5s ease;
+  -moz-transition: 0.5s ease;
+}
+
+.btn-green:hover {
+  background: #bae637;
+  border-color: #bae637;
+}
