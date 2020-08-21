@@ -95,7 +95,6 @@ export default function AddLevel(props) {
                                         {...field}
                                         name={[field.name, 'name']}
                                         fieldKey={[field.fieldKey, 'name']}
-                                        rules={[{ required: true, message: 'Name is required' }]}
                                     >
                                         <Input placeholder="Name" />
                                     </Form.Item>
@@ -103,7 +102,6 @@ export default function AddLevel(props) {
                                         {...field}
                                         name={[field.name, 'data']}
                                         fieldKey={[field.fieldKey, 'data']}
-                                        rules={[{ required: true, message: 'Data is required' }]}
                                     >
                                         <Input placeholder="Data" />
                                     </Form.Item>
