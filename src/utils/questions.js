@@ -6,6 +6,7 @@ import { openNotification } from "../components/Notification";
 import { config } from "./settings";
 import { getQuestions } from "../actions/questions";
 import { getBoard } from "../actions/board";
+import { getKillswitch } from "../actions/killswitch";
 
 export const refreshQuestion = async () => {
     try {
@@ -164,6 +165,45 @@ export const manageQuestion = async (type, data) => {
 
         return true;
     } catch (err) {
+        return null;
+    }
+}
+
+export const refreshKillswitch = async () => {
+    try {
+        let options = {
+            method: "get",
+            url: `${config.url.API_URL}/api/v1/users/kill`,
+            headers: {
+                "x-auth-token": localStorage.getItem('access_token')
+            }
+        }
+        let { data } = await axios(options);
+
+        return getKillswitch(data.data);
+    } catch (err) {
+        openNotification(err.response ? err.response.data.message : "Server Error.");
+        return getKillswitch(null);
+    }
+}
+
+export const setKillswitch = async (date) => {
+    try {
+        let options = {
+            method: "post",
+            url: `${config.url.API_URL}/api/v1/users/kill`,
+            headers: {
+                "x-auth-token": localStorage.getItem('access_token')
+            },
+            data: {
+                date
+            }
+        }
+        await axios(options);
+
+        return true;
+    } catch (err) {
+        openNotification(err.response ? err.response.data.message : "Server Error.");
         return null;
     }
 }

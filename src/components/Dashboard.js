@@ -10,7 +10,7 @@ import Question from "./Questions";
 import Leaderboard from "./Leaderboard";
 import Users from "./Users";
 
-import { refreshQuestion, refreshBoard } from "../utils/questions";
+import { refreshQuestion, refreshBoard, refreshKillswitch } from "../utils/questions";
 import { refreshUsers } from "../utils/users";
 
 const { Header, Content } = Layout;
@@ -22,6 +22,7 @@ export default function Dashboard() {
         refreshQuestion().then(dispatch);
         refreshUsers().then(dispatch);
         refreshBoard().then(dispatch);
+        refreshKillswitch().then(dispatch);
     }, [dispatch])
     
     return (
