@@ -18,11 +18,11 @@ export default function Question() {
     let [modalView, setModalView] = useState(false);
     let [modalContext, setModalContext] = useState("");
     let [modalRecord, setModalRecord] = useState({});
-    let [killswitch, setKs] = useState(moment());
+    let [killswitch, setKs] = useState();
 
     useEffect(() => {
         if (source) setQuestions(Object.values(source).map((d, i) => ({ ...d, key: i })));
-        if (ks) setKs(ks);
+        if (ks) setKs(moment(ks));
     }, [source, ks]);
 
     const showModal = (context, record) => () => {
@@ -76,7 +76,7 @@ export default function Question() {
         <div>
             <GeneralModal visible={modalView} parentVisible={setModalView} context={modalContext} record={modalRecord} />
             <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 15 }}>
-                <DatePicker defaultValue={killswitch} style={{ marginRight: 15 }} showTime onOk={setKsAPI} />
+                <DatePicker allowClear={false} value={killswitch} style={{ marginRight: 15 }} showTime placeholder="Killswitch" onOk={setKsAPI} />
                 <Button type="primary" icon={<PlusOutlined />} onClick={showModal('add-level')}>Add Level</Button>
             </div>
             <Table
