@@ -18,11 +18,11 @@ export default function Question() {
     let [modalView, setModalView] = useState(false);
     let [modalContext, setModalContext] = useState("");
     let [modalRecord, setModalRecord] = useState({});
-    let [killswitch, setKs] = useState();
+    let [killswitch, setKs] = useState({});
 
     useEffect(() => {
         if (source) setQuestions(Object.values(source).map((d, i) => ({ ...d, key: i })));
-        if (ks) setKs(moment(ks));
+        if (ks) setKs(ks);
     }, [source, ks]);
 
     const showModal = (context, record) => () => {
@@ -31,9 +31,16 @@ export default function Question() {
         setModalRecord(record)
     }
 
-    const setKsAPI = async (value) => {
-        await setKillswitch(value.toISOString());
-        dispatch(getKillswitch(value.toISOString()));
+    const setKsAPI = (type) => async (value) => {
+      let dates = { };
+      if (type === 'start') {
+        dates.scheduledOn = value.toISOString();
+        await setKillswitch(value.toISOString(), null);
+      } else if (type === 'end') {
+        dates.activateOn = value.toISOString();
+        await setKillswitch(null, value.toISOString());
+      }
+      dispatch(getKillswitch(dates));
     }
 
     const columns = [
@@ -76,7 +83,8 @@ export default function Question() {
         <div>
             <GeneralModal visible={modalView} parentVisible={setModalView} context={modalContext} record={modalRecord} />
             <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 15 }}>
-                <DatePicker allowClear={false} value={killswitch} style={{ marginRight: 15 }} showTime placeholder="Killswitch" onOk={setKsAPI} />
+                <DatePicker allowClear={false} value={moment(killswitch.scheduledOn)} style={{ marginRight: 15 }} showTime placeholder="Start Date" onOk={setKsAPI('start')} />
+                <DatePicker allowClear={false} value={moment(killswitch.activateOn)} style={{ marginRight: 15 }} showTime placeholder="End Date" onOk={setKsAPI('end')} />
                 <Button type="primary" icon={<PlusOutlined />} onClick={showModal('add-level')}>Add Level</Button>
             </div>
             <Table

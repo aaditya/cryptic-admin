@@ -187,7 +187,7 @@ export const refreshKillswitch = async () => {
     }
 }
 
-export const setKillswitch = async (date) => {
+export const setKillswitch = async (start, end) => {
     try {
         let options = {
             method: "post",
@@ -196,7 +196,8 @@ export const setKillswitch = async (date) => {
                 "x-auth-token": localStorage.getItem('access_token')
             },
             data: {
-                date
+              scheduledOn: start,
+              activateOn: end, 
             }
         }
         await axios(options);
