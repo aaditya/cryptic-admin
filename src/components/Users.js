@@ -71,7 +71,7 @@ export default function Users() {
             dataIndex: 'history',
             key: 'lastLogin',
             render: text => {
-                let ll = test ? text.lastLogin.slice(-1)[0] : new Date();
+                let ll = text ? text.lastLogin.slice(-1)[0] : new Date();
                 let ld = new Date(ll.accessOn).toDateString()
                 return <p>{ld} from {ll.from}</p>
             }
